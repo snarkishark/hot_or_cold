@@ -19,7 +19,7 @@ $(document).ready(function(){
   	});
   
   	$("form").on("submit",function(e){
-  		event.preventDefault();
+  		e.preventDefault();
   		var userGuess = $("#userGuess").val();
   		if ($.isNumeric(userGuess)){
   			if(100>= userGuess >= 1){
@@ -44,11 +44,12 @@ function newGame(){
 	$("#userGuess").attr("placeholder","Enter your Guess");
 	$("#guessList").empty();
 	secretNumber = Math.floor(Math.random()*100);
+	$("form").disabled=false;
 }
 
 function assessGuess(userGuess){
 	
-	
+	console.log("secret is "+secretNumber);
 	console.log("guess is "+userGuess);
 	var difference=Math.abs(secretNumber - userGuess);
 
@@ -60,11 +61,12 @@ function assessGuess(userGuess){
 		$("h2#feedback").html("Lukewarm");
 	}else if(difference>=3){
 		$("h2#feedback").html("Warm!");
-	}else if(difference>=0){
+	}else if(difference>0){
 		$("h2#feedback").html("Hot!");
-	}else if(difference == 0){
+	}else{
 		$("h2#feedback").html("You got it!");
-	}
+		$("form").disabled();
+	} 
 	$("#guessList").append("<li>"+userGuess+"</li>");
 	count+=1;
 	$("#count").html(count);
